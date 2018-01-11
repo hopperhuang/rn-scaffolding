@@ -1,61 +1,102 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Text, PixelRatio } from 'react-native'
+import { StyleSheet, View, Image, Text } from 'react-native'
 import { connect } from 'react-redux'
-import { Tag } from 'antd-mobile'
-import TagStyle from 'antd-mobile/lib/tag/style/index.native'
-import { Button } from '../components'
+// import { Tag } from 'antd-mobile'
+// import TagStyle from 'antd-mobile/lib/tag/style/index.native'
+// import { Button } from '../components'
+import BookItem from '../components/BookItem'
 
-import { NavigationActions } from '../utils'
+import { NavigationActions, scale } from '../utils'
+import authenAndFetchComponent from '../utils/hoc'
+
+// console.log(scale)
 
 @connect()
 class Home extends Component {
   static navigationOptions = {
-    title: 'Home',
-    tabBarLabel: 'Home',
+    title: '有毒阅读',
+    tabBarLabel: '首页',
     tabBarIcon: ({ focused, tintColor }) => (
       <Image
-        style={[styles.icon, { tintColor: focused ? tintColor : 'gray' }]}
+        style={[{ width: 20, height: 20}, { tintColor: focused ? tintColor : 'gray' }]}
         source={require('../images/house.png')}
       />
     ),
   }
 
-  gotoDetail = () => {
+  gotoDetail = () => { 
     this.props.dispatch(NavigationActions.navigate({ routeName: 'Detail' }))
   }
 
   render() {
-    console.log(TagStyle)
-    console.log(PixelRatio.get())
+    // console.log(TagStyle)
     return (
-      <View style={styles.container}>
-        <Button text="Goto detials" onPress={this.gotoDetail} />
-        <Tag>这里是一个tag</Tag>
-        <View style={styles.test}>
-          <Text style={styles.red} >这里是一个测试框</Text>
+      <View>
+        <View style={styles.test} >
+          <View><Text>热门推荐55</Text></View>
+          <View style={styles.border} />
+          <View><Text>新番速递</Text></View>
+        </View>
+        <View>
+          <BookItem />
         </View>
       </View>
     )
   }
 }
 
+
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  test: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: 309 * scale,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
+    marginLeft: 221.5 * scale,
+    marginTop: 38 * scale,
+  },
+  container: {
+    width: 750 * scale,
+    flex: 1
   },
   icon: {
-    width: 50,
-    height: 32,
+    width: 38.4,
+    height: 38.4
   },
-  test: {
-    width: '110%'
+  title: {
+    width: 309 * scale,
+    height: 45 * scale,
+    flex: 1,
+    flexDirection: 'row',
+    marginLeft: 221.5 * scale,
+    marginTop: 38 * scale,
+    justifyContent: 'space-between',
+    // alignItems: 'center'
   },
-  red: {
-    color: 'red',
-    textAlign: 'center'
+  titleItem: {
+    // flex: 1
+  },
+  border: {
+    width: 4 * scale,
+    height: 20 * scale,
+    borderColor: '#B7B3B3',
+    borderWidth: 2 * scale,
+    // marginTop: 8 * scale
+  },
+  right: {
+    textAlign: 'right',
+  },
+  left: {
+    textAlign: 'left',
+  },
+  text: {
+    fontSize: 32 * scale,
   }
 })
+// console.log(styles)
 
-export default Home
+const AuthFetchHome = connect()(authenAndFetchComponent()()(Home)) 
+
+export default AuthFetchHome

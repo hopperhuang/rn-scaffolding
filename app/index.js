@@ -7,6 +7,7 @@ import Router from './router'
 import appModel from './models/app'
 import routerModel from './models/router'
 
+
 const app = dva({
   initialState: {},
   models: [appModel, routerModel],
