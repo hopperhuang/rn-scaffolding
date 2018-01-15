@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { View } from 'react-native'
+import { ActivityIndicator } from 'antd-mobile'
 
 export default function authenAndFetchComponent(authenrizationMethod) {
     return function Fetch(fetchMethod) {
@@ -16,12 +18,12 @@ export default function authenAndFetchComponent(authenrizationMethod) {
                         fetch()
                     }
                 }
+                shouldComponentUpdate(nextProps, previousProps) {
+                    return nextProps !== previousProps
+                }
                 render() {
-                    // console.log(2333)
-                    console.log(this.props)
-                    // const { loading } = this.props
-                    // return (loading ? <Com {...this.props} /> : null)
-                    return (<Com {...this.props} />)
+                    const { loading } = this.props
+                    return loading ? (<View><ActivityIndicator text="玩命加载中"  /></View>) : (<Com {...this.props} />)
                 }
             }
         }

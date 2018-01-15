@@ -9,8 +9,6 @@ import BookItem from '../components/BookItem'
 import { NavigationActions, scale } from '../utils'
 import authenAndFetchComponent from '../utils/hoc'
 
-// console.log(scale)
-
 @connect()
 class Home extends Component {
   static navigationOptions = {
@@ -23,17 +21,21 @@ class Home extends Component {
       />
     ),
   }
-
+  
   gotoDetail = () => { 
     this.props.dispatch(NavigationActions.navigate({ routeName: 'Detail' }))
   }
 
   render() {
-    // console.log(TagStyle)
+    const { model } = this.props
+    const { data } = model
+    const { ret } = data
+    const  first  = ret[0]
+    console.log(first)
     return (
       <View>
         <View style={styles.test} >
-          <View><Text>热门推荐55</Text></View>
+          <View><Text>热门推荐</Text></View>
           <View style={styles.border} />
           <View><Text>新番速递</Text></View>
         </View>
@@ -97,6 +99,16 @@ const styles = StyleSheet.create({
 })
 // console.log(styles)
 
-const AuthFetchHome = connect()(authenAndFetchComponent()()(Home)) 
+function fetchMethods() {
+  this.props.dispatch({ type: 'home/fetch'}).catch(e => console.log(e))
+}
+function mapStateToProps(state) {
+  return {
+    loading: state.home.loading,
+    model: state.home
+  }
+}
+
+const AuthFetchHome = connect(mapStateToProps)(authenAndFetchComponent()(fetchMethods)(Home)) 
 
 export default AuthFetchHome
